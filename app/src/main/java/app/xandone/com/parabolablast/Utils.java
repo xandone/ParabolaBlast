@@ -15,23 +15,27 @@ import java.util.Random;
  */
 public class Utils {
     private static final Canvas sCanvas = new Canvas();
-    private static Random random = new Random();
+    private static Random sRandom = new Random();
 
     public static int dp2px(Context context, int values) {
         float density = context.getResources().getDisplayMetrics().density;
         return (int) (values * density + 0.5f);
     }
 
+    public static Random getRandom() {
+        return sRandom;
+    }
+
     public static int randomInt(int speed) {
-        return random.nextInt(speed) - random.nextInt(speed);
+        return sRandom.nextInt(speed) - sRandom.nextInt(speed);
     }
 
     public static int randomIntPositive(int speed) {
-        return random.nextInt(speed);
+        return sRandom.nextInt(speed);
     }
 
     public static int randomIntPositive(int max, int min) {
-        return random.nextInt(max - min) + min;
+        return sRandom.nextInt(max - min) + min;
     }
 
     public static Bitmap createBitmapFromView(View view) {

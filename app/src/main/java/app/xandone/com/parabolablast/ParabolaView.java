@@ -9,6 +9,9 @@ import android.util.AttributeSet;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by xandone on 2017/3/6.
  */
@@ -29,8 +32,13 @@ public class ParabolaView extends ImageView {
     private float mBuff_X, mBuff_Y;
 
     private float mAnimValue;
-
     private ValueAnimator mValueAnimator;
+
+    private Bitmap mBitmap;
+    private Paint mBallPaint;
+    private int mBallColor;
+    private int ballCount;
+    private List<LittleBall> ballList;
 
     public ParabolaView(Context context) {
         this(context, null);
@@ -48,6 +56,9 @@ public class ParabolaView extends ImageView {
 
     public void init() {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mBallPaint = new Paint();
+        mBallPaint.setStyle(Paint.Style.FILL);
+        ballList = new ArrayList<>();
 
         mDefaultSize = Utils.dp2px(mContext, 60);
         mValueAnimator = ValueAnimator.ofFloat(0, 1f);
@@ -126,6 +137,23 @@ public class ParabolaView extends ImageView {
     public void setXY() {
         this.setX((1 - mAnimValue) * (1 - mAnimValue) * mStart_X + 2 * mAnimValue * (1 - mAnimValue) * mControl_X + mAnimValue * mAnimValue * mEnd_X);
         this.setY((1 - mAnimValue) * (1 - mAnimValue) * mStart_Y + 2 * mAnimValue * (1 - mAnimValue) * mControl_Y + mAnimValue * mAnimValue * mEnd_Y);
+    }
+
+
+    public void createBalls() {
+        for (int i = 0; i < ballCount; i++) {
+            ballList.add(new LittleBall(mEnd_X, mEnd_Y, mWidth, mHeight, mBallPaint,
+                    mBitmap.getPixel(Utils.randomIntPositive(mEnd_X + mWidth, mEnd_X), Utils.randomIntPositive(mEnd_Y + mHeight, mEnd_Y))));
+        }
+    }
+
+    public void showBalls(Canvas canvas) {
+        if (ballList == null && ballList.size() <= 0) {
+            return;
+        }
+        for (int i = 0; i < ballCount; i++) {
+            ballList.get(i).drawBall(canvas);
+        }
     }
 
 }
