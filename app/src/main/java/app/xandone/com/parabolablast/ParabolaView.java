@@ -1,11 +1,14 @@
 package app.xandone.com.parabolablast;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
@@ -55,6 +58,8 @@ public class ParabolaView extends ImageView {
     }
 
     public void init() {
+        ballCount = 1;
+
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mBallPaint = new Paint();
         mBallPaint.setStyle(Paint.Style.FILL);
@@ -72,11 +77,38 @@ public class ParabolaView extends ImageView {
                 invalidate();
             }
         });
+        mValueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isEnd = true;
+                createBalls();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
     }
+
+    boolean isEnd = false;
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (isEnd) {
+            showBalls(canvas);
+        }
     }
 
     @Override
@@ -142,8 +174,10 @@ public class ParabolaView extends ImageView {
 
     public void createBalls() {
         for (int i = 0; i < ballCount; i++) {
-            ballList.add(new LittleBall(mEnd_X, mEnd_Y, mWidth, mHeight, mBallPaint,
-                    mBitmap.getPixel(Utils.randomIntPositive(mEnd_X + mWidth, mEnd_X), Utils.randomIntPositive(mEnd_Y + mHeight, mEnd_Y))));
+//            ballList.add(new LittleBall(mEnd_X, mEnd_Y, mWidth, mHeight, mBallPaint,
+//                    mBitmap.getPixel(Utils.randomIntPositive(mEnd_X + mWidth, mEnd_X), Utils.randomIntPositive(mEnd_Y + mHeight, mEnd_Y))));
+            ballList.add(new LittleBall(mEnd_X, mEnd_Y, mWidth, mHeight, mBallPaint, Color.RED));
+            Log.d("xandone",mEnd_X+"    "+mEnd_Y+"    "+mWidth+"    "+mHeight+"    ");
         }
     }
 

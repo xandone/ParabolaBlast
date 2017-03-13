@@ -2,6 +2,7 @@ package app.xandone.com.parabolablast;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 /**
  * Created by xandone on 2017/3/6.
@@ -40,7 +41,8 @@ public class LittleBall {
     }
 
     public void drawBall(Canvas canvas) {
-        canvas.drawCircle(mStart_X, mStart_Y, mRadius, mPaint);
+        canvas.drawCircle(90, 90, 50, mPaint);
+        Log.d("balldgfgfdg", mStart_X + "     " + mStart_Y + "    " + mRadius);
     }
 
     public int getmStart_X() {
