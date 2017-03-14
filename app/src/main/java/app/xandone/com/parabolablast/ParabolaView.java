@@ -5,10 +5,10 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by xandone on 2017/3/6.
  */
 public class ParabolaView extends ImageView {
-    private Context mContext;
+    private MainActivity mActivity;
     private int mDefaultSize;
     private int mWidth, mHeight;
     private int mStart_X;
@@ -28,11 +28,6 @@ public class ParabolaView extends ImageView {
     private int mEnd_Y;
     private int mControl_X;
     private int mControl_Y;
-
-    private Bitmap mBitmapBuffer;
-    private Canvas mCanvas;
-    private Paint mPaint;
-    private float mBuff_X, mBuff_Y;
 
     private float mAnimValue;
     private ValueAnimator mValueAnimator;
@@ -53,19 +48,18 @@ public class ParabolaView extends ImageView {
 
     public ParabolaView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mContext = context;
+        mActivity = (MainActivity) context;
         init();
     }
 
     public void init() {
-        ballCount = 1;
+        ballCount = 30;
 
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mBallPaint = new Paint();
         mBallPaint.setStyle(Paint.Style.FILL);
         ballList = new ArrayList<>();
 
-        mDefaultSize = Utils.dp2px(mContext, 60);
+        mDefaultSize = Utils.dp2px(mActivity, 60);
         mValueAnimator = ValueAnimator.ofFloat(0, 1f);
         mValueAnimator.setDuration(1200);
         mValueAnimator.setInterpolator(new AccelerateInterpolator());
@@ -85,8 +79,9 @@ public class ParabolaView extends ImageView {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                isEnd = true;
                 createBalls();
+                setVisibility(View.GONE);
+                setOnAnimEndInterface(mActivity);
             }
 
             @Override
@@ -101,14 +96,9 @@ public class ParabolaView extends ImageView {
         });
     }
 
-    boolean isEnd = false;
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (isEnd) {
-            showBalls(canvas);
-        }
     }
 
     @Override
@@ -147,23 +137,15 @@ public class ParabolaView extends ImageView {
         this.mHeight = h;
         mStart_X = (int) getX();
         mStart_Y = (int) getY();
-//        mBitmapBuffer = Utils.createBitmapFromView(this).copy(Bitmap.Config.ARGB_4444, true);
-//        mCanvas = new Canvas(mBitmapBuffer);
-//        mBitmapBuffer = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_4444);
+        mBitmap = Utils.createBitmapFromView(this);
     }
 
     public void startAnim(int x, int y) {
         mEnd_X = x;
         mEnd_Y = y;
         mControl_X = (mStart_X + mEnd_X) / 2;
-        mControl_Y = mStart_Y - Utils.dp2px(mContext, 200);
+        mControl_Y = mStart_Y - Utils.dp2px(mActivity, 200);
         mValueAnimator.start();
-    }
-
-    public void drawBit() {
-        mBuff_X = getX();
-        mBuff_Y = getY();
-        mCanvas.drawBitmap(mBitmapBuffer, mBuff_X, mBuff_Y, mPaint);
     }
 
     public void setXY() {
@@ -171,23 +153,20 @@ public class ParabolaView extends ImageView {
         this.setY((1 - mAnimValue) * (1 - mAnimValue) * mStart_Y + 2 * mAnimValue * (1 - mAnimValue) * mControl_Y + mAnimValue * mAnimValue * mEnd_Y);
     }
 
-
     public void createBalls() {
         for (int i = 0; i < ballCount; i++) {
-//            ballList.add(new LittleBall(mEnd_X, mEnd_Y, mWidth, mHeight, mBallPaint,
-//                    mBitmap.getPixel(Utils.randomIntPositive(mEnd_X + mWidth, mEnd_X), Utils.randomIntPositive(mEnd_Y + mHeight, mEnd_Y))));
-            ballList.add(new LittleBall(mEnd_X, mEnd_Y, mWidth, mHeight, mBallPaint, Color.RED));
-            Log.d("xandone",mEnd_X+"    "+mEnd_Y+"    "+mWidth+"    "+mHeight+"    ");
+            ballList.add(new LittleBall(mEnd_X, mEnd_Y, mWidth, mHeight, mBallPaint,
+                    mBitmap.getPixel(Utils.randomIntPositive(mBitmap.getWidth() - 1, 0), Utils.randomIntPositive(mBitmap.getHeight() - 1, 0))));
+            Log.d("xandone", mEnd_X + "    " + mEnd_Y + "    " + mWidth + "    " + mHeight + "    ");
         }
     }
 
-    public void showBalls(Canvas canvas) {
-        if (ballList == null && ballList.size() <= 0) {
-            return;
-        }
-        for (int i = 0; i < ballCount; i++) {
-            ballList.get(i).drawBall(canvas);
-        }
+    public void setOnAnimEndInterface(AnimEndInterface animEndInterface) {
+        animEndInterface.onDrawBall(ballList);
+    }
+
+    public interface AnimEndInterface {
+        void onDrawBall(List<LittleBall> littleBalls);
     }
 
 }

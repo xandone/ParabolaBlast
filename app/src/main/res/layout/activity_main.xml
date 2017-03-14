@@ -5,9 +5,15 @@
     android:layout_height="match_parent">
 
     <app.xandone.com.parabolablast.ParabolaView
-        android:id="@+id/ballView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="30dp"
-        android:src="@mipmap/ic_launcher" />
+        android:id="@+id/parentPanel"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/pic" />
+
+    <app.xandone.com.parabolablast.BoomView
+        android:id="@+id/boomView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

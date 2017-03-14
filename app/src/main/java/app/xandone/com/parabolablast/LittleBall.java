@@ -33,16 +33,23 @@ public class LittleBall {
     public void init() {
         this.mStart_X = Utils.randomIntPositive(mView_endX + mView_w, mView_endX);
         this.mStart_Y = Utils.randomIntPositive(mView_endY + mView_h, mView_endY);
-        this.mEnd_X = Utils.randomInt(2 * mView_w);
-        this.mEnd_Y = Utils.randomInt(2 * mView_h);
-        this.mRadius = Utils.randomIntPositive(40, 20);
+        this.mEnd_X = Utils.randomIntPositive(mView_endX + 2 * mView_w, mView_endX - mView_w);
+        this.mEnd_Y = mView_endY + mView_h;
+        this.mRadius = Utils.randomIntPositive(12, 4);
         mControl_X = (mStart_X + mEnd_X) / 2;
-        mControl_Y = mStart_Y - 200;
+        mControl_Y = mStart_Y - 300;
+
+        Log.d("xandone", mStart_X + "   " + mStart_Y + "   " + mEnd_X + "    " + mEnd_Y + "   " + mControl_X + "    " + mControl_Y);
     }
 
     public void drawBall(Canvas canvas) {
-        canvas.drawCircle(90, 90, 50, mPaint);
-        Log.d("balldgfgfdg", mStart_X + "     " + mStart_Y + "    " + mRadius);
+        mPaint.setColor(mColor);
+        canvas.drawCircle(mStart_X, mStart_Y, mRadius, mPaint);
+    }
+
+    public void setXY(float mAnimValue) {
+        this.setmStart_X((int) ((1 - mAnimValue) * (1 - mAnimValue) * mStart_X + 2 * mAnimValue * (1 - mAnimValue) * mControl_X + mAnimValue * mAnimValue * mEnd_X));
+        this.setmStart_Y((int) ((1 - mAnimValue) * (1 - mAnimValue) * mStart_Y + 2 * mAnimValue * (1 - mAnimValue) * mControl_Y + mAnimValue * mAnimValue * mEnd_Y));
     }
 
     public int getmStart_X() {
