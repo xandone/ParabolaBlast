@@ -33,7 +33,7 @@ public class LittleBall {
     public void init() {
         this.mStart_X = Utils.randomIntPositive(mView_endX + mView_w, mView_endX);
         this.mStart_Y = Utils.randomIntPositive(mView_endY + mView_h, mView_endY);
-        this.mEnd_X = Utils.randomIntPositive(mView_endX + 2 * mView_w, mView_endX - mView_w);
+        this.mEnd_X = Utils.randomIntPositive(mView_endX + mView_w, mView_endX - mView_w);
         this.mEnd_Y = mView_endY + mView_h;
         this.mRadius = Utils.randomIntPositive(12, 4);
         mControl_X = (mStart_X + mEnd_X) / 2;

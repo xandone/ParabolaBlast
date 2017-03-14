@@ -62,6 +62,7 @@ public class BoomView extends View {
             ballList.get(i).drawBall(canvas);
             if (mAnimValue != 0) {
                 ballList.get(i).setXY(mAnimValue);
+                this.setAlpha(1 - mAnimValue);
             }
         }
     }

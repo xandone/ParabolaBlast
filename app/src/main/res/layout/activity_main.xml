@@ -8,8 +8,9 @@
         android:id="@+id/parentPanel"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_margin="10dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/pic" />
+        android:src="@mipmap/pic" />s
 
     <app.xandone.com.parabolablast.BoomView
         android:id="@+id/boomView"

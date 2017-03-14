@@ -34,7 +34,6 @@ public class ParabolaView extends ImageView {
 
     private Bitmap mBitmap;
     private Paint mBallPaint;
-    private int mBallColor;
     private int ballCount;
     private List<LittleBall> ballList;
 
@@ -53,7 +52,7 @@ public class ParabolaView extends ImageView {
     }
 
     public void init() {
-        ballCount = 30;
+        ballCount = 40;
 
         mBallPaint = new Paint();
         mBallPaint.setStyle(Paint.Style.FILL);
@@ -80,7 +79,7 @@ public class ParabolaView extends ImageView {
             @Override
             public void onAnimationEnd(Animator animation) {
                 createBalls();
-                setVisibility(View.GONE);
+                resetView();
                 setOnAnimEndInterface(mActivity);
             }
 
@@ -144,7 +143,7 @@ public class ParabolaView extends ImageView {
         mEnd_X = x;
         mEnd_Y = y;
         mControl_X = (mStart_X + mEnd_X) / 2;
-        mControl_Y = mStart_Y - Utils.dp2px(mActivity, 200);
+        mControl_Y = mStart_Y - Utils.dp2px(mActivity, 300);
         mValueAnimator.start();
     }
 
@@ -153,7 +152,15 @@ public class ParabolaView extends ImageView {
         this.setY((1 - mAnimValue) * (1 - mAnimValue) * mStart_Y + 2 * mAnimValue * (1 - mAnimValue) * mControl_Y + mAnimValue * mAnimValue * mEnd_Y);
     }
 
+    public void resetView() {
+        this.setX(mStart_X);
+        this.setY(mStart_Y);
+    }
+
     public void createBalls() {
+        if (ballList != null) {
+            ballList.clear();
+        }
         for (int i = 0; i < ballCount; i++) {
             ballList.add(new LittleBall(mEnd_X, mEnd_Y, mWidth, mHeight, mBallPaint,
                     mBitmap.getPixel(Utils.randomIntPositive(mBitmap.getWidth() - 1, 0), Utils.randomIntPositive(mBitmap.getHeight() - 1, 0))));
