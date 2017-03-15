@@ -21,4 +21,5 @@
  @Override
     public void onDrawBall(List<LittleBall> littleBalls) {
         boomView.startAnim(littleBalls);
+    }
 ```
