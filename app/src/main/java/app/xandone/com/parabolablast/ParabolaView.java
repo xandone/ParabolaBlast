@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
@@ -19,7 +18,8 @@ import java.util.List;
  * Created by xandone on 2017/3/6.
  */
 public class ParabolaView extends ImageView {
-    private MainActivity mActivity;
+    private AnimEndInterface mAnimEndInterface;
+    private Context mContext;
     private int mDefaultSize;
     private int mWidth, mHeight;
     private int mStart_X;
@@ -47,7 +47,7 @@ public class ParabolaView extends ImageView {
 
     public ParabolaView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mActivity = (MainActivity) context;
+        mContext = context;
         init();
     }
 
@@ -58,7 +58,7 @@ public class ParabolaView extends ImageView {
         mBallPaint.setStyle(Paint.Style.FILL);
         ballList = new ArrayList<>();
 
-        mDefaultSize = Utils.dp2px(mActivity, 60);
+        mDefaultSize = Utils.dp2px(mContext, 60);
         mValueAnimator = ValueAnimator.ofFloat(0, 1f);
         mValueAnimator.setDuration(1200);
         mValueAnimator.setInterpolator(new AccelerateInterpolator());
@@ -80,7 +80,7 @@ public class ParabolaView extends ImageView {
             public void onAnimationEnd(Animator animation) {
                 createBalls();
                 resetView();
-                setOnAnimEndInterface(mActivity);
+                setOnAnimEndInterface(mAnimEndInterface);
             }
 
             @Override
@@ -143,7 +143,7 @@ public class ParabolaView extends ImageView {
         mEnd_X = x;
         mEnd_Y = y;
         mControl_X = (mStart_X + mEnd_X) / 2;
-        mControl_Y = mStart_Y - Utils.dp2px(mActivity, 300);
+        mControl_Y = mStart_Y - Utils.dp2px(mContext, 300);
         mValueAnimator.start();
     }
 
@@ -176,4 +176,11 @@ public class ParabolaView extends ImageView {
         void onDrawBall(List<LittleBall> littleBalls);
     }
 
+    public AnimEndInterface getmAnimEndInterface() {
+        return mAnimEndInterface;
+    }
+
+    public void setmAnimEndInterface(AnimEndInterface mAnimEndInterface) {
+        this.mAnimEndInterface = mAnimEndInterface;
+    }
 }

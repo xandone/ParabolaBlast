@@ -4,7 +4,8 @@
 ![](https://github.com/xandone/ParabolaBlast/blob/master/pic/gif1.gif)
 ### 2.用法简介：
 传入ParabolaView终点坐标(x,y),执行动画startAnim(x,y)</br>
-当前Activity必须实现ParabolaView中的AnimEndInterface接口
+当前Activity必须实现ParabolaView中的AnimEndInterface接口(已改)
+Activity实现AnimEndInterface太过于局限，更改成聚合的设计模式，适用于Activity/ViewGroup/Dialog等..
 ### 2.栗子：
 #### 设置OnTouchListener事件，将手指点击处作为终点坐标(x,y)传入，开启动画效果。
 ```Java
@@ -16,7 +17,7 @@
         return true;
     }
 ```
-#### 当前Activity重写:
+#### 重写:
 ```Java
  @Override
     public void onDrawBall(List<LittleBall> littleBalls) {

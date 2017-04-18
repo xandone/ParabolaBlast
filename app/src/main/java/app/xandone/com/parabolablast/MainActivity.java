@@ -8,18 +8,21 @@ import android.widget.RelativeLayout;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ParabolaView.AnimEndInterface {
+public class MainActivity extends AppCompatActivity {
     private RelativeLayout rl;
     private ParabolaView parabolaView;
     private BoomView boomView;
+    private AnimEnd mAnimEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAnimEnd = new AnimEnd();
         boomView = (BoomView) findViewById(R.id.boomView);
         rl = (RelativeLayout) findViewById(R.id.rl);
         parabolaView = (ParabolaView) findViewById(R.id.parentPanel);
+        parabolaView.setmAnimEndInterface(mAnimEnd);
         rl.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -31,8 +34,11 @@ public class MainActivity extends AppCompatActivity implements ParabolaView.Anim
         });
     }
 
-    @Override
-    public void onDrawBall(List<LittleBall> littleBalls) {
-        boomView.startAnim(littleBalls);
+    class AnimEnd implements ParabolaView.AnimEndInterface {
+
+        @Override
+        public void onDrawBall(List<LittleBall> littleBalls) {
+            boomView.startAnim(littleBalls);
+        }
     }
 }
