@@ -164,7 +164,7 @@ public class ParabolaView extends ImageView {
         for (int i = 0; i < ballCount; i++) {
             ballList.add(new LittleBall(mEnd_X, mEnd_Y, mWidth, mHeight, mBallPaint,
                     mBitmap.getPixel(Utils.randomIntPositive(mBitmap.getWidth() - 1, 0), Utils.randomIntPositive(mBitmap.getHeight() - 1, 0))));
-            Log.d("xandone", mEnd_X + "    " + mEnd_Y + "    " + mWidth + "    " + mHeight + "    ");
+            Log.d("yandone", mEnd_X + "    " + mEnd_Y + "    " + mWidth + "    " + mHeight + "    ");
         }
     }
 
@@ -182,5 +182,13 @@ public class ParabolaView extends ImageView {
 
     public void setmAnimEndInterface(AnimEndInterface mAnimEndInterface) {
         this.mAnimEndInterface = mAnimEndInterface;
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mValueAnimator != null) {
+            mValueAnimator.cancel();
+        }
     }
 }

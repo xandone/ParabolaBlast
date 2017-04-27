@@ -74,4 +74,11 @@ public class BoomView extends View {
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mValueAnimator != null) {
+            mValueAnimator.cancel();
+        }
+    }
 }
